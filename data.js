@@ -43,6 +43,18 @@ window.KALENDER_DATA = {
         "comment": "",
         "updatedAt": "2026-11-16T12:13:06.357Z"
       }
+    },
+    "3": {
+      "Dirk": {
+        "optik": 4,
+        "geruch": 7,
+        "geschmack": 14,
+        "mundgefuehl": 3,
+        "abgang": 7,
+        "total": 35,
+        "comment": "",
+        "updatedAt": "2026-11-16T12:13:53.846Z"
+      }
     }
   }
 };
