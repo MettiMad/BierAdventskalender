@@ -20,6 +20,15 @@ window.KALENDER_DATA = {
       "abv": "4.9%",
       "addedBy": "Dirk",
       "updatedAt": "2026-11-16T12:00:00.000Z"
+    },
+    "3": {
+      "day": 3,
+      "name": "Mekatzer",
+      "brewery": "",
+      "style": "",
+      "abv": "",
+      "addedBy": "Dirk",
+      "updatedAt": "2026-11-16T12:13:52.053Z"
     }
   },
   "ratings": {
