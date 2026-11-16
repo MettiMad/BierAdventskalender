@@ -53,7 +53,7 @@ window.KALENDER_DATA = {
         "abgang": 10,
         "total": 27,
         "comment": "",
-        "updatedAt": "2026-11-16T12:17:33.843Z"
+        "updatedAt": "2026-11-16T12:17:37.990Z"
       }
     },
     "3": {
