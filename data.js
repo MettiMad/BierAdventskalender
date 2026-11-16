@@ -48,12 +48,12 @@ window.KALENDER_DATA = {
       "Michael": {
         "optik": 5,
         "geruch": 10,
-        "geschmack": 1,
-        "mundgefuehl": 1,
+        "geschmack": 20,
+        "mundgefuehl": 5,
         "abgang": 10,
-        "total": 27,
+        "total": 50,
         "comment": "",
-        "updatedAt": "2026-11-16T12:17:39.655Z"
+        "updatedAt": "2026-11-16T12:18:17.464Z"
       }
     },
     "3": {
