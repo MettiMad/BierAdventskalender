@@ -7,12 +7,12 @@ window.KALENDER_DATA = {
   "beers": {
     "1": {
       "day": 1,
-      "name": "Test-Bier 1",
+      "name": "Test-Bier 1000",
       "brewery": "Brauerei A",
       "style": "Helles",
       "abv": "5.2%",
       "addedBy": "Michael",
-      "updatedAt": "2026-11-16T12:17:26.648Z"
+      "updatedAt": "2026-11-16T12:20:27.815Z"
     },
     "2": {
       "day": 2,
