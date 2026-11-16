@@ -17,12 +17,12 @@ window.KALENDER_DATA = {
     },
     "2": {
       "day": 2,
-      "name": "Test-Bier 2",
+      "name": "Test-Bier 1234",
       "brewery": "Brauerei B",
       "style": "Pils",
       "abv": "4.9%",
-      "addedBy": "Dirk",
-      "updatedAt": "2026-11-16T12:00:00.000Z"
+      "addedBy": "Michael",
+      "updatedAt": "2026-11-16T15:09:54.204Z"
     },
     "3": {
       "day": 3,
