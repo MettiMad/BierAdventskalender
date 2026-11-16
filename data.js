@@ -1,6 +1,7 @@
 window.KALENDER_DATA = {
   "users": [
-    "Dirk"
+    "Dirk",
+    "Klaus"
   ],
   "beers": {
     "1": {
