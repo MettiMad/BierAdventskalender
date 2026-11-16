@@ -1,5 +1,7 @@
 window.KALENDER_DATA = {
-  "users": [],
+  "users": [
+    "Dirk"
+  ],
   "beers": {
     "1": {
       "day": 1,
@@ -20,5 +22,18 @@ window.KALENDER_DATA = {
       "updatedAt": "2026-11-16T12:00:00.000Z"
     }
   },
-  "ratings": {}
+  "ratings": {
+    "1": {
+      "Dirk": {
+        "optik": 5,
+        "geruch": 5,
+        "geschmack": 10,
+        "mundgefuehl": 3,
+        "abgang": 5,
+        "total": 28,
+        "comment": "",
+        "updatedAt": "2026-11-16T12:13:06.357Z"
+      }
+    }
+  }
 };
