@@ -196,12 +196,39 @@
     setInterval(loadState, 15000);
   }
 
-  async function loadState() {
+async function loadState() {
+  try {
     const res = await fetch('/api/data');
-    state = await res.json();
+    if (!res.ok) {
+      throw new Error('Netzwerk-Antwort war nicht ok');
+    }
+    
+    const data = await res.json();
+
+    // Fall 1: Der Server sendet direkt ein Array von Biere
+    if (Array.isArray(data)) {
+      state = { beers: data };
+    } 
+    // Fall 2: Der Server sendet ein Objekt
+    else {
+      state = data;
+    }
+
+    // Sicherheitsnetz: Falls state.beers immer noch fehlt, setzen wir ein leeres Array
+    if (!state.beers) {
+      state.beers = [];
+    }
+
+    renderCalendar();
+    renderRanking();
+  } catch (err) {
+    console.error('Fehler beim Laden der Daten:', err);
+    // Notfall-Fallback, damit die App nicht einfriert
+    state = { beers: [] };
     renderCalendar();
     renderRanking();
   }
+}
 
   function updateUserButton() {
     document.getElementById('userBtn').textContent = currentUser ? `👤 ${currentUser}` : '👤 Name';
