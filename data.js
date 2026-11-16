@@ -56,6 +56,16 @@ window.KALENDER_DATA = {
         "total": 35,
         "comment": "",
         "updatedAt": "2026-11-16T12:13:53.846Z"
+      },
+      "Michael": {
+        "optik": 5,
+        "geruch": 10,
+        "geschmack": 20,
+        "mundgefuehl": 5,
+        "abgang": 10,
+        "total": 50,
+        "comment": "",
+        "updatedAt": "2026-11-16T12:16:06.572Z"
       }
     }
   }
