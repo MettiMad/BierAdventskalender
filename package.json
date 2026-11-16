@@ -1,0 +1,12 @@
+{
+  "name": "bier-adventskalender-2026",
+  "version": "1.0.0",
+  "description": "Bier-Adventskalender Bewertung für 24 Personen",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

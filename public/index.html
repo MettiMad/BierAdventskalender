@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bier-Adventskalender 2026</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --card-hover: #273549;
+      --border: #334155;
+      --amber: #f59e0b;
+      --amber-dark: #d97706;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --green: #10b981;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 60px; }
+    header {
+      background: #111827; border-bottom: 1px solid var(--border);
+      padding: 14px 16px; position: sticky; top: 0; z-index: 20;
+      display: flex; justify-content: space-between; align-items: center; gap: 10px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.1rem; color: var(--amber); }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+    button {
+      cursor: pointer; border: none; border-radius: 10px; padding: 9px 14px;
+      font-weight: 600; font-size: 0.9rem; transition: 0.15s;
+    }
+    .btn-primary { background: var(--amber); color: #0f172a; }
+    .btn-primary:hover { background: var(--amber-dark); }
+    .btn-whatsapp { background: #25D366; color: #062814; }
+    .btn-ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+    .container { max-width: 960px; margin: 0 auto; padding: 16px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 16px; }
+    .tab { flex: 1; background: var(--card); color: var(--muted); padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; }
+    .tab.active { background: var(--amber); color: #0f172a; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+    .door {
+      background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+      padding: 14px; cursor: pointer; transition: 0.15s; position: relative;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 125px;
+    }
+    .door:hover { border-color: var(--amber); background: var(--card-hover); }
+    .door.rated { border-color: var(--green); }
+    .door-num { font-size: 1.4rem; font-weight: 900; color: var(--amber); }
+    .door-title { font-weight: 700; font-size: 0.95rem; margin: 6px 0 2px; }
+    .door-sub { font-size: 0.78rem; color: var(--muted); }
+    .badge {
+      position: absolute; top: 10px; right: 10px; font-size: 0.72rem;
+      padding: 3px 7px; border-radius: 999px; background: #0f172a; color: var(--amber); font-weight: 700;
+    }
+    .badge.done { background: rgba(16,185,129,0.2); color: var(--green); }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.78);
+      display: none; align-items: center; justify-content: center; padding: 14px; z-index: 50;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+      width: 100%; max-width: 520px; max-height: 92vh; overflow-y: auto; padding: 20px;
+    }
+    .modal h2 { color: var(--amber); margin-bottom: 12px; }
+    .field { margin-bottom: 12px; }
+    .field label { display: flex; justify-content: space-between; font-size: 0.88rem; margin-bottom: 5px; font-weight: 600; }
+    input[type="text"], textarea {
+      width: 100%; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid var(--border); background: #0f172a; color: var(--text); font-size: 0.95rem;
+    }
+    input[type="range"] { width: 100%; accent-color: var(--amber); }
+    .score-box {
+      background: #0f172a; border: 1px solid var(--border); border-radius: 12px;
+      padding: 12px; text-align: center; margin: 14px 0;
+    }
+    .score-box span { font-size: 1.8rem; font-weight: 900; color: var(--amber); }
+    .card-box { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+    .row-between { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .review-item { border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="brand">🍺 Bier-Kalender 2026</div>
+  <div class="header-actions">
+    <button class="btn-ghost" id="userBtn" onclick="openNameModal()">👤 Name</button>
+    <button class="btn-whatsapp" onclick="shareWhatsApp()">📲 WhatsApp</button>
+  </div>
+</header>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" id="tabCalendar" onclick="switchTab('calendar')">📅 24 Türchen</div>
+    <div class="tab" id="tabRanking" onclick="switchTab('ranking')">🏆 Bestenliste</div>
+  </div>
+
+  <div id="viewCalendar" class="grid"></div>
+  <div id="viewRanking" style="display:none;"></div>
+</div>
+
+<!-- Namens-Modal beim Einstieg -->
+<div class="modal-backdrop" id="nameModal">
+  <div class="modal">
+    <h2>🍻 Willkommen zur Verkostung!</h2>
+    <p style="color:var(--muted); font-size:0.9rem; margin-bottom:14px;">
+      Trag kurz deinen Namen ein, damit deine Bewertungen gespeichert werden:
+    </p>
+    <div class="field">
+      <input type="text" id="usernameInput" placeholder="Dein Vorname (z. B. Lukas)" />
+    </div>
+    <button class="btn-primary" style="width:100%;" onclick="saveUsername()">Los geht's</button>
+  </div>
+</div>
+
+<!-- Türchen-Modal (Bier anlegen & bewerten) -->
+<div class="modal-backdrop" id="dayModal">
+  <div class="modal">
+    <div class="row-between" style="margin-bottom:12px;">
+      <h2 id="modalTitle" style="margin:0;">Türchen 1</h2>
+      <button class="btn-ghost" onclick="closeDayModal()">✕</button>
+    </div>
+
+    <!-- Bier-Details -->
+    <div class="card-box" style="background:#0f172a;">
+      <div style="font-weight:700; margin-bottom:8px; color:var(--amber);">1. Überraschungsbier eintragen / bearbeiten</div>
+      <div class="field"><input type="text" id="beerName" placeholder="Biername (Pflichtfeld)" /></div>
+      <div class="field"><input type="text" id="beerBrewery" placeholder="Brauerei (optional)" /></div>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="beerStyle" placeholder="Stil (z. B. IPA, Pils)" />
+        <input type="text" id="beerAbv" placeholder="Alk. % (z. B. 5,2%)" style="max-width:130px;" />
+      </div>
+      <button class="btn-ghost" style="width:100%; margin-top:10px;" onclick="saveBeer()">💾 Bier speichern</button>
+    </div>
+
+    <!-- Bewertung in 5 Kategorien -->
+    <div id="ratingSection">
+      <div style="font-weight:700; margin:12px 0 8px; color:var(--amber);">2. Deine Bewertung</div>
+
+      <div class="field">
+        <label><span>Optik (1–5)</span><span id="valOptik">3 / 5</span></label>
+        <input type="range" id="optik" min="1" max="5" value="3" oninput="updateLiveScore()" />
+      </div>
+
+      <div class="field">
+        <label><span>Geruch (1–10)</span><span id="valGeruch">5 / 10</span></label>
+        <input type="range" id="geruch" min="1" max="10" value="5" oninput="updateLiveScore()" />
+      </div>
+
+      <div class="field">
+        <label><span>Geschmack (1–20)</span><span id="valGeschmack">10 / 20</span></label>
+        <input type="range" id="geschmack" min="1" max="20" value="10" oninput="updateLiveScore()" />
+      </div>
+
+      <div class="field">
+        <label><span>Mundgefühl (1–5)</span><span id="valMund">3 / 5</span></label>
+        <input type="range" id="mundgefuehl" min="1" max="5" value="3" oninput="updateLiveScore()" />
+      </div>
+
+      <div class="field">
+        <label><span>Abgang & Gesamteindruck (1–10)</span><span id="valAbgang">5 / 10</span></label>
+        <input type="range" id="abgang" min="1" max="10" value="5" oninput="updateLiveScore()" />
+      </div>
+
+      <div class="field">
+        <textarea id="comment" rows="2" placeholder="Kurzer Kommentar zum Bier (optional)..."></textarea>
+      </div>
+
+      <div class="score-box">
+        Gesamtpunktzahl: <span id="liveTotal">26</span> / 50 Punkte
+      </div>
+
+      <button class="btn-primary" style="width:100%;" onclick="saveRating()">⭐ Bewertung absenden</button>
+    </div>
+
+    <!-- Bisherige Bewertungen für dieses Türchen -->
+    <div id="existingReviews" style="margin-top:16px;"></div>
+  </div>
+</div>
+
+<script>
+  let state = { users: [], beers: {}, ratings: {} };
+  let currentUser = localStorage.getItem('bier_user') || '';
+  let activeDay = null;
+
+  async function init() {
+    updateUserButton();
+    if (!currentUser) {
+      openNameModal();
+    }
+    await loadState();
+    // Alle 15 Sekunden automatisch aktualisieren, falls jemand in der Gruppe abstimmt
+    setInterval(loadState, 15000);
+  }
+
+  async function loadState() {
+    const res = await fetch('/api/data');
+    state = await res.json();
+    renderCalendar();
+    renderRanking();
+  }
+
+  function updateUserButton() {
+    document.getElementById('userBtn').textContent = currentUser ? `👤 ${currentUser}` : '👤 Name';
+  }
+
+  function openNameModal() {
+    document.getElementById('usernameInput').value = currentUser;
+    document.getElementById('nameModal').classList.add('open');
+  }
+
+  async function saveUsername() {
+    const val = document.getElementById('usernameInput').value.trim();
+    if (!val) return alert('Bitte gib deinen Namen ein.');
+    currentUser = val;
+    localStorage.setItem('bier_user', currentUser);
+    updateUserButton();
+    document.getElementById('nameModal').classList.remove('open');
+
+    const res = await fetch('/api/user', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: currentUser })
+    });
+    state = await res.json();
+  }
+
+  function shareWhatsApp() {
+    const url = window.location.href;
+    const text = `🍻 Hier ist unser Bier-Adventskalender 2026! Link öffnen, Namen eintragen & mitbewerten:\n${url}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tabCalendar').classList.toggle('active', tab === 'calendar');
+    document.getElementById('tabRanking').classList.toggle('active', tab === 'ranking');
+    document.getElementById('viewCalendar').style.display = tab === 'calendar' ? 'grid' : 'none';
+    document.getElementById('viewRanking').style.display = tab === 'ranking' ? 'block' : 'none';
+  }
+
+  function renderCalendar() {
+    const grid = document.getElementById('viewCalendar');
+    grid.innerHTML = '';
+
+    for (let d = 1; d <= 24; d++) {
+      const beer = state.beers[d];
+      const dayRatings = state.ratings[d] || {};
+      const ratingList = Object.values(dayRatings);
+      const userRated = currentUser && dayRatings[currentUser];
+      const avg = ratingList.length
+        ? (ratingList.reduce((s, r) => s + r.total, 0) / ratingList.length).toFixed(1)
+        : null;
+
+      const div = document.createElement('div');
+      div.className = `door ${userRated ? 'rated' : ''}`;
+      div.onclick = () => openDayModal(d);
+      div.innerHTML = `
+        <div class="badge ${userRated ? 'done' : ''}">
+          ${avg ? `Ø ${avg} Pkt (${ratingList.length})` : 'Offen'}
+        </div>
+        <div class="door-num">${d}</div>
+        <div>
+          <div class="door-title">${beer ? escapeHtml(beer.name) : 'Noch kein Bier'}</div>
+          <div class="door-sub">${beer ? escapeHtml(beer.brewery || beer.style || 'Tippen zum Bewerten') : 'Tippen zum Eintragen'}</div>
+        </div>
+      `;
+      grid.appendChild(div);
+    }
+  }
+
+  function openDayModal(day) {
+    if (!currentUser) return openNameModal();
+    activeDay = day;
+    document.getElementById('modalTitle').textContent = `Türchen ${day}`;
+
+    const beer = state.beers[day] || {};
+    document.getElementById('beerName').value = beer.name || '';
+    document.getElementById('beerBrewery').value = beer.brewery || '';
+    document.getElementById('beerStyle').value = beer.style || '';
+    document.getElementById('beerAbv').value = beer.abv || '';
+
+    const myRating = (state.ratings[day] && state.ratings[day][currentUser]) || {
+      optik: 3, geruch: 5, geschmack: 10, mundgefuehl: 3, abgang: 5, comment: ''
+    };
+
+    document.getElementById('optik').value = myRating.optik;
+    document.getElementById('geruch').value = myRating.geruch;
+    document.getElementById('geschmack').value = myRating.geschmack;
+    document.getElementById('mundgefuehl').value = myRating.mundgefuehl;
+    document.getElementById('abgang').value = myRating.abgang;
+    document.getElementById('comment').value = myRating.comment || '';
+    updateLiveScore();
+
+    renderDayReviews(day);
+    document.getElementById('dayModal').classList.add('open');
+  }
+
+  function closeDayModal() {
+    document.getElementById('dayModal').classList.remove('open');
+  }
+
+  function updateLiveScore() {
+    const o = Number(document.getElementById('optik').value);
+    const g = Number(document.getElementById('geruch').value);
+    const s = Number(document.getElementById('geschmack').value);
+    const m = Number(document.getElementById('mundgefuehl').value);
+    const a = Number(document.getElementById('abgang').value);
+
+    document.getElementById('valOptik').textContent = `${o} / 5`;
+    document.getElementById('valGeruch').textContent = `${g} / 10`;
+    document.getElementById('valGeschmack').textContent = `${s} / 20`;
+    document.getElementById('valMund').textContent = `${m} / 5`;
+    document.getElementById('valAbgang').textContent = `${a} / 10`;
+    document.getElementById('liveTotal').textContent = o + g + s + m + a;
+  }
+
+  async function saveBeer() {
+    const name = document.getElementById('beerName').value.trim();
+    if (!name) return alert('Bitte mindestens den Biernamen eingeben.');
+
+    const res = await fetch('/api/beer', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        day: activeDay,
+        name,
+        brewery: document.getElementById('beerBrewery').value,
+        style: document.getElementById('beerStyle').value,
+        abv: document.getElementById('beerAbv').value,
+        addedBy: currentUser
+      })
+    });
+    state = await res.json();
+    renderCalendar();
+    renderRanking();
+    alert('Bier gespeichert!');
+  }
+
+  async function saveRating() {
+    if (!state.beers[activeDay]) {
+      const nameInput = document.getElementById('beerName').value.trim();
+      if (!nameInput) return alert('Bitte zuerst oben das Bier eintragen!');
+      await saveBeer();
+    }
+
+    const res = await fetch('/api/rate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        day: activeDay,
+        user: currentUser,
+        optik: document.getElementById('optik').value,
+        geruch: document.getElementById('geruch').value,
+        geschmack: document.getElementById('geschmack').value,
+        mundgefuehl: document.getElementById('mundgefuehl').value,
+        abgang: document.getElementById('abgang').value,
+        comment: document.getElementById('comment').value
+      })
+    });
+    state = await res.json();
+    renderCalendar();
+    renderRanking();
+    renderDayReviews(activeDay);
+    alert('Bewertung gespeichert!');
+  }
+
+  function renderDayReviews(day) {
+    const box = document.getElementById('existingReviews');
+    const dayRatings = state.ratings[day] || {};
+    const entries = Object.entries(dayRatings);
+
+    if (!entries.length) {
+      box.innerHTML = '<div style="color:var(--muted); font-size:0.85rem;">Noch keine Bewertungen für dieses Türchen.</div>';
+      return;
+    }
+
+    box.innerHTML = `<div style="font-weight:700; margin-bottom:6px;">Bisherige Stimmen (${entries.length}/24):</div>` +
+      entries.map(([user, r]) => `
+        <div class="review-item">
+          <div class="row-between">
+            <strong>${escapeHtml(user)}</strong>
+            <span style="color:var(--amber); font-weight:700;">${r.total} / 50 Pkt</span>
+          </div>
+          <div style="color:var(--muted); font-size:0.78rem;">
+            Optik: ${r.optik} · Geruch: ${r.geruch} · Geschmack: ${r.geschmack} · Mundgefühl: ${r.mundgefuehl} · Abgang: ${r.abgang}
+          </div>
+          ${r.comment ? `<div style="margin-top:3px; font-style:italic;">„${escapeHtml(r.comment)}“</div>` : ''}
+        </div>
+      `).join('');
+  }
+
+  function renderRanking() {
+    const container = document.getElementById('viewRanking');
+    const list = [];
+
+    for (let d = 1; d <= 24; d++) {
+      const beer = state.beers[d];
+      const ratings = Object.values(state.ratings[d] || {});
+      if (beer && ratings.length > 0) {
+        const avg = ratings.reduce((s, r) => s + r.total, 0) / ratings.length;
+        list.push({ day: d, beer, avg, count: ratings.length });
+      }
+    }
+
+    list.sort((a, b) => b.avg - a.avg);
+
+    if (!list.length) {
+      container.innerHTML = `<div class="card-box" style="text-align:center; color:var(--muted);">Noch keine bewerteten Biere vorhanden.</div>`;
+      return;
+    }
+
+    container.innerHTML = list.map((item, idx) => `
+      <div class="card-box row-between" onclick="openDayModal(${item.day})" style="cursor:pointer;">
+        <div>
+          <div style="font-weight:800; color:var(--amber);">#${idx + 1} · Türchen ${item.day}: ${escapeHtml(item.beer.name)}</div>
+          <div style="font-size:0.82rem; color:var(--muted);">${escapeHtml(item.beer.brewery || '')} · ${item.count} Bewertungen</div>
+        </div>
+        <div style="font-size:1.3rem; font-weight:900; color:var(--green);">Ø ${item.avg.toFixed(1)}</div>
+      </div>
+    `).join('');
+  }
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+  }
+
+  init();
+</script>
+</body>
+</html>
