@@ -1,7 +1,8 @@
 window.KALENDER_DATA = {
   "users": [
     "Dirk",
-    "Klaus"
+    "Klaus",
+    "Michael"
   ],
   "beers": {
     "1": {
@@ -55,16 +56,6 @@ window.KALENDER_DATA = {
         "total": 35,
         "comment": "",
         "updatedAt": "2026-11-16T12:13:53.846Z"
-      },
-      "Klaus": {
-        "optik": 1,
-        "geruch": 1,
-        "geschmack": 2,
-        "mundgefuehl": 1,
-        "abgang": 1,
-        "total": 6,
-        "comment": "",
-        "updatedAt": "2026-11-16T12:15:24.429Z"
       }
     }
   }
