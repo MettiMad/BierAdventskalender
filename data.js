@@ -11,8 +11,8 @@ window.KALENDER_DATA = {
       "brewery": "Brauerei A",
       "style": "Helles",
       "abv": "5.2%",
-      "addedBy": "Dirk",
-      "updatedAt": "2026-11-16T12:00:00.000Z"
+      "addedBy": "Michael",
+      "updatedAt": "2026-11-16T12:17:26.648Z"
     },
     "2": {
       "day": 2,
