@@ -64,8 +64,8 @@ window.KALENDER_DATA = {
         "mundgefuehl": 3,
         "abgang": 7,
         "total": 35,
-        "comment": "",
-        "updatedAt": "2026-11-17T06:18:45.913Z"
+        "comment": "Lecker Bierchen",
+        "updatedAt": "2026-11-17T06:19:36.859Z"
       }
     },
     "2": {
