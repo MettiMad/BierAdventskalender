@@ -67,6 +67,16 @@ window.KALENDER_DATA = {
         "total": 35,
         "comment": "Lecker Bierchen",
         "updatedAt": "2026-11-17T06:19:36.859Z"
+      },
+      "Mathias": {
+        "optik": 4,
+        "geruch": 7,
+        "geschmack": 10,
+        "mundgefuehl": 3,
+        "abgang": 8,
+        "total": 32,
+        "comment": "",
+        "updatedAt": "2026-11-17T06:45:27.292Z"
       }
     },
     "2": {
