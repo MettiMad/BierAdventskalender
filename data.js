@@ -3,7 +3,8 @@ window.KALENDER_DATA = {
     "Dirk",
     "Klaus",
     "Michael",
-    "Alex"
+    "Alex",
+    "Sascha"
   ],
   "beers": {
     "1": {
